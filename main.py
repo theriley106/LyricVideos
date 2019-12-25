@@ -1,5 +1,14 @@
 import os
 import random
+import cv2
+import glob
+print(cv2.__version__)
+from PIL import Image, ImageStat
+
+def hash_image(image_path):
+    img = Image.open(image_path).resize((8,8), Image.LANCZOS).convert(mode="L")
+    mean = ImageStat.Stat(img).mean[0]
+    return sum((1 if p > mean else 0) << i for i, p in enumerate(img.getdata()))
 
 def download_song(song):
 	fileName = ''.join([str(random.randint(1,9)) for i in range(10)]) + ".mp4"
@@ -9,5 +18,30 @@ def download_song(song):
 	os.system(command)
 	return fileName
 
+
+
+
 if __name__ == '__main__':
-	download_song('nine in the afternoon')
+	a = download_song('nine in the afternoon')
+	vidcap = cv2.VideoCapture(a)
+	success,image = vidcap.read()
+	count = 0
+	success = True
+	while success:
+		  cv2.imwrite("frame%d.jpg" % count, image)     # save frame as JPEG file
+		  success,image = vidcap.read()
+		  count += 1
+	vals = [None]
+	allFiles = list(glob.glob("frame*.jpg"))
+	allFiles.sort(key=lambda k: int(k.replace("frame", "").replace(".jpg", "")))
+	for i, imageVal in enumerate(allFiles):
+		print imageVal
+		result = hash_image(imageVal)
+		# print result
+		if result == vals[-1]:
+			# print("removed")
+			os.system("rm {}".format(imageVal))
+		else:
+			vals.append(result)
+		# print(i)
+
