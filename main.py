@@ -39,7 +39,7 @@ def hash_image(image_path):
 def get_all_song_options(song):
 	a = []
 	command = "youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' "
-	command += '"ytsearch1:{} lyrics" '.format(song)
+	command += '"ytsearch3:{} lyrics" '.format(song)
 	command += '--get-id > tmp'
 	os.system(command)
 	return [x for x in open('tmp').read().split("\n") if len(x) > 0]
@@ -67,8 +67,8 @@ def create_video():
 
 def create_lyric_video(songName):
 	allOptions = get_all_song_options(songName)
+	raw_input(allOptions)
 	for index, val in enumerate(allOptions):
-		raw_input(allOptions)
 		a = download_by_id(val, songName)
 		finalFileName = songName.replace(" ", "_") + ".mp4"
 		vidcap = cv2.VideoCapture(a)
