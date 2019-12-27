@@ -5,20 +5,29 @@ import glob
 print(cv2.__version__)
 from PIL import Image, ImageStat
 from mutagen.mp4 import MP4
-import pytesseract
 from PIL import Image, ImageDraw, ImageFont
- 
-
+import textwrap
+import imageOCR
 
 def recreate_image(fileName):
-	text = pytesseract.image_to_string(Image.open(fileName))
+	text = imageOCR.ocr(fileName)
+	text = ' '.join(text)
 	x = Image.open(fileName)
-	width, height = x.size
-	img = Image.new('RGB', (width, height), color = (73, 109, 137))
+	MAX_W, MAX_H = x.size
+	img = Image.new('RGB', (MAX_W, MAX_H), color = (0, 0, 0, 0))
  
-	fnt = ImageFont.truetype('arial.ttf', 30)
-	d = ImageDraw.Draw(img)
-	d.text((10,10), text, font=fnt, fill=(255, 255, 0))
+	font = ImageFont.truetype('arial.ttf', 30)
+	draw = ImageDraw.Draw(img)
+
+	para = textwrap.wrap(text, width=15)
+
+	current_h, pad = 50, 10
+	for line in para:
+	    w, h = draw.textsize(line, font=font)
+	    draw.text(((MAX_W - w) / 2, current_h), line, font=font)
+	    current_h += h + pad
+
+	# d.text((10,10), text, font=fnt, fill=(255, 255, 0))
 	 
 	img.save(fileName)
 
@@ -101,6 +110,8 @@ def create_lyric_video(songName):
 
 
 if __name__ == '__main__':
+	recreate_image("frame00020.jpg")
+	raw_input("CONTINUE")
 	for songName in open("songs.txt").read().split("\n"):
 		try:
 			# songName = raw_input("Song Name: ")
