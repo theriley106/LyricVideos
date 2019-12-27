@@ -101,8 +101,12 @@ def create_lyric_video(songName):
 
 
 if __name__ == '__main__':
-	songName = raw_input("Song Name: ")
-	create_lyric_video(songName)
+	for songName in open("songs.txt").read().split("\n"):
+		try:
+			# songName = raw_input("Song Name: ")
+			create_lyric_video(songName)
+		except Exception as exp:
+			print("ERROR {} {}".format(songName, exp))
 	
 	
 
