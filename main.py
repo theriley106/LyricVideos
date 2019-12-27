@@ -33,17 +33,23 @@ if __name__ == '__main__':
 	success,image = vidcap.read()
 	count = 0
 	success = True
+	db = {}
 	while success:
-		  cv2.imwrite("frame%d.jpg" % count, image)     # save frame as JPEG file
+		  frameFile = "frame{}.jpg".format(str(count).zfill(5))
+		  cv2.imwrite(frameFile, image)     # save frame as JPEG file
 		  success,image = vidcap.read()
+		  db[frameFile] = frameFile
 		  count += 1
+	os.system("ffmpeg -i {} -f mp3 -ab 192000 -vn audio.mp3".format(a))
 	audio = MP4(a)
-
+	os.system("cp frame* test/")
 	# raw_input(audio.info.length)
 	# print(os.path.getsize(a))
-	print("length of each frame in seconds: {}".format(audio.info.length / float(count)))
-	# raw_input()
+	fps = int(float(count) / audio.info.length)
+	# print("length of each frame in seconds: {}".format())
+	# raw_input("FPS ^")
 	vals = [None]
+	valsInfo = [None]
 	allFiles = list(glob.glob("frame*.jpg"))
 	allFiles.sort(key=lambda k: int(k.replace("frame", "").replace(".jpg", "")))
 	for i, imageVal in enumerate(allFiles):
@@ -53,7 +59,25 @@ if __name__ == '__main__':
 		if result == vals[-1]:
 			# print("removed")
 			os.system("rm {}".format(imageVal))
+			db[imageVal] = valsInfo[-1]
 		else:
 			vals.append(result)
+			valsInfo.append(imageVal)
 		# print(i)
+	files = []
+	os.system("mkdir temp")
+	os.system("rm temp/*")
+	raw_input("Press to continue")
+	for k, v in db.iteritems():
+		command = "cp {} temp/{}".format(v, k)
+		os.system(command)
+		print(command)
+	# os.system("mkdir temp")
+	os.system("ffmpeg -framerate 30 -i temp/frame%05d.jpg Project.mp4")
+	os.system("ffmpeg -i Project.mp4 -i audio.mp3 -c copy -map 0:v:0 -map 1:a:0 final.mp4")
+	# allFiles = list(glob.glob("frame*.jpg"))
+	# allFiles.sort(key=lambda k: int(k.replace("frame", "").replace(".jpg", "")))
+
+	
+
 
