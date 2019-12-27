@@ -4,6 +4,9 @@ import cv2
 import glob
 print(cv2.__version__)
 from PIL import Image, ImageStat
+from mutagen.mp4 import MP4
+
+
 
 def hash_image(image_path):
     img = Image.open(image_path).resize((8,8), Image.LANCZOS).convert(mode="L")
@@ -18,6 +21,9 @@ def download_song(song):
 	os.system(command)
 	return fileName
 
+def create_video():
+    os.system("ffmpeg -r 1 -i frame%01d.png -vcodec mpeg4 -y movie.mp4")
+
 
 
 
@@ -31,6 +37,12 @@ if __name__ == '__main__':
 		  cv2.imwrite("frame%d.jpg" % count, image)     # save frame as JPEG file
 		  success,image = vidcap.read()
 		  count += 1
+	audio = MP4(a)
+
+	# raw_input(audio.info.length)
+	# print(os.path.getsize(a))
+	print("length of each frame in seconds: {}".format(audio.info.length / float(count)))
+	# raw_input()
 	vals = [None]
 	allFiles = list(glob.glob("frame*.jpg"))
 	allFiles.sort(key=lambda k: int(k.replace("frame", "").replace(".jpg", "")))
