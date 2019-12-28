@@ -11,7 +11,7 @@ import imageOCR
 
 def recreate_image(fileName):
 	text = imageOCR.ocr(fileName)
-	text = ' '.join(text)
+	text = ' '.join(text).capitalize()
 	x = Image.open(fileName)
 	MAX_W, MAX_H = x.size
 	img = Image.new('RGB', (MAX_W, MAX_H), color = (0, 0, 0, 0))
@@ -19,7 +19,7 @@ def recreate_image(fileName):
 	font = ImageFont.truetype('arial.ttf', 30)
 	draw = ImageDraw.Draw(img)
 
-	para = textwrap.wrap(text, width=15)
+	para = textwrap.wrap(text, width=30)
 
 	current_h, pad = 50, 10
 	for line in para:
@@ -67,7 +67,7 @@ def create_video():
 
 def create_lyric_video(songName):
 	allOptions = get_all_song_options(songName)
-	raw_input(allOptions)
+	# raw_input(allOptions)
 	for index, val in enumerate(allOptions):
 		a = download_by_id(val, songName)
 		finalFileName = songName.replace(" ", "_") + ".mp4"
@@ -106,7 +106,7 @@ def create_lyric_video(songName):
 				vals.append(result)
 				valsInfo.append(imageVal)
 			# print(i)
-		if len(valsInfo) < 100 or index == len(allFiles) - 1:
+		if len(valsInfo) < 300 or index == len(allFiles) - 1:
 			for val in valsInfo:
 				if val != None:
 					recreate_image(val)
