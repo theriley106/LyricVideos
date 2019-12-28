@@ -117,22 +117,14 @@ def create_lyric_video(songName):
 				os.system(command)
 				print(command)
 			# os.system("mkdir temp")
-			os.system("ffmpeg -framerate 30 -i temp/frame%05d.jpg Project.mp4")
-			os.system("ffmpeg -i Project.mp4 -i audio.mp3 -c copy -map 0:v:0 -map 1:a:0 final.mp4")
-			os.system("rm temp/*")
-			os.system("rm Project.mp4")
-			os.system("rm *.mp3")
-			os.system("rm frame*")
-			os.system("rm download_*")
-			os.system("mv final.mp4 {}".format(finalFileName))
+			os.system("./finalize.sh {}")
+			os.system("./clearAll.sh")
 			# allFiles = list(glob.glob("frame*.jpg"))
 			# allFiles.sort(key=lambda k: int(k.replace("frame", "").replace(".jpg", "")))
 			return
 		else:
 			print("Trying next video...")
-			os.system("rm *.mp3")
-			os.system("rm frame*")
-			os.system("rm download_*")
+			os.system("./clearAll.sh")
 
 
 if __name__ == '__main__':
