@@ -86,7 +86,6 @@ def create_lyric_video(songName):
 		audio = MP4(a)
 		# os.system("cp frame* test/")
 		# raw_input(audio.info.length)
-		# print(os.path.getsize(a))
 		fps = int(float(count) / audio.info.length)
 		# print("length of each frame in seconds: {}".format())
 		# raw_input("FPS ^")
