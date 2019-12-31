@@ -82,6 +82,7 @@ def create_lyric_video(songName):
 			  success,image = vidcap.read()
 			  db[frameFile] = frameFile
 			  count += 1
+		os.system("ffmpeg -i {} -vf fps=1 frame{}.jpg".format(a, str(count).zfill(5)))
 		os.system("ffmpeg -i {} -f mp3 -ab 192000 -vn audio.mp3".format(a))
 		audio = MP4(a)
 		# os.system("cp frame* test/")
