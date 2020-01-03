@@ -8,9 +8,14 @@ from mutagen.mp4 import MP4
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import imageOCR
+import threading
 
-def recreate_image(fileName):
-	text = imageOCR.ocr(fileName)
+def recreate_image(fileName, override=None):
+	print("RECREATING IMAGE {}".format(fileName))
+	if override == None:
+		text = imageOCR.ocr(fileName)
+	else:
+		text = override
 	text = ' '.join(text).capitalize()
 	x = Image.open(fileName)
 	MAX_W, MAX_H = x.size
@@ -53,8 +58,8 @@ def download_song(song):
 	os.system("youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' ytsearch3:'nine in the afternoon lyrics' --get-id")
 	return fileName
 
-def download_by_id(idVal, song):
-	fileName = "download_" + ''.join([str(random.randint(1,9)) for i in range(10)]) + ".mp4"
+def download_by_id(idVal, song, index):
+	fileName = "download_" + ''.join([str(random.randint(1,9)) for i in range(10)]) + "{}.mp4".format(index)
 	command = "youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' https://www.youtube.com/watch?v={} ".format(idVal)
 	command += '--output "{}"'.format(fileName)
 	os.system(command)
@@ -65,66 +70,74 @@ def download_by_id(idVal, song):
 def create_video():
     os.system("ffmpeg -r 1 -i frame%01d.png -vcodec mpeg4 -y movie.mp4")
 
+# Info is a tuple containing index, val (a url), and the fileName
+def create_video_from_info(info):
+	index, val, fileName = info
+	index += 1
+	a = download_by_id(val, songName, index)
+	finalFileName = songName.replace(" ", "_") + "{}.mp4".format(index)
+	vidcap = cv2.VideoCapture(a)
+	success,image = vidcap.read()
+	count = 0
+	success = True
+	db = {}
+	os.system("ffmpeg -i {} -vf fps=1 frame_{}_%05d.jpg".format(a, index))
+	for frameFile in glob.glob("frame_{}*jpg".format(index)):
+		  db[frameFile] = frameFile
+		  count += 1
+	# count = len(list())
+	os.system("ffmpeg -i {} -f mp3 -ab 192000 -vn audio_{}.mp3".format(a, index))
+	audio = MP4(a)
+	# os.system("cp frame* test/")
+	# raw_input(audio.info.length)
+	fps = 1
+	# print("length of each frame in seconds: {}".format())
+	# raw_input("FPS ^")
+	vals = [None]
+	valsInfo = [None]
+	allFiles = list(glob.glob("frame_{}_*.jpg".format(index)))
+	allFiles.sort(key=lambda k: int(k.replace("frame_{}_".format(index), "").replace(".jpg", "")))
+	for i, imageVal in enumerate(allFiles):
+		print imageVal
+		result = hash_image(imageVal)
+		# print result
+		if result == vals[-1]:
+			# print("removed")
+			os.system("rm {}".format(imageVal))
+			db[imageVal] = valsInfo[-1]
+		else:
+			vals.append(result)
+			valsInfo.append(imageVal)
+		# print(i)
+	for val in valsInfo:
+		if val != None:
+			recreate_image(val)
+	files = []
+	os.system("mkdir temp_{}".format(index))
+	os.system("rm temp_{}/*".format(index))
+	for k, v in db.iteritems():
+		command = "cp {} temp_{}/{}".format(v, index, k)
+		os.system(command)
+		print(command)
+	# os.system("mkdir temp")
+	os.system("./finalize.sh {} {}".format(finalFileName, index))
+	os.system("./clearAll.sh {}".format(index))
+	# allFiles = list(glob.glob("frame*.jpg"))
+	# allFiles.sort(key=lambda k: int(k.replace("frame", "").replace(".jpg", "")))
+	return
+
+
 def create_lyric_video(songName):
 	allOptions = get_all_song_options(songName)
 	# raw_input(allOptions)
+	a = []
 	for index, val in enumerate(allOptions):
-		a = download_by_id(val, songName)
-		finalFileName = songName.replace(" ", "_") + ".mp4"
-		vidcap = cv2.VideoCapture(a)
-		success,image = vidcap.read()
-		count = 0
-		success = True
-		db = {}
-		os.system("ffmpeg -i {} -vf fps=1 frame%05d.jpg".format(a))
-		for frameFile in glob.glob("frame*jpg"):
-			  db[frameFile] = frameFile
-			  count += 1
-		# count = len(list())
-		os.system("ffmpeg -i {} -f mp3 -ab 192000 -vn audio.mp3".format(a))
-		audio = MP4(a)
-		# os.system("cp frame* test/")
-		# raw_input(audio.info.length)
-		fps = 1
-		# print("length of each frame in seconds: {}".format())
-		# raw_input("FPS ^")
-		vals = [None]
-		valsInfo = [None]
-		allFiles = list(glob.glob("frame*.jpg"))
-		allFiles.sort(key=lambda k: int(k.replace("frame", "").replace(".jpg", "")))
-		for i, imageVal in enumerate(allFiles):
-			print imageVal
-			result = hash_image(imageVal)
-			# print result
-			if result == vals[-1]:
-				# print("removed")
-				os.system("rm {}".format(imageVal))
-				db[imageVal] = valsInfo[-1]
-			else:
-				vals.append(result)
-				valsInfo.append(imageVal)
-			# print(i)
-		if len(valsInfo) < 300 or index == len(allFiles) - 1:
-			for val in valsInfo:
-				if val != None:
-					recreate_image(val)
-			files = []
-			os.system("mkdir temp")
-			os.system("rm temp/*")
-			for k, v in db.iteritems():
-				command = "cp {} temp/{}".format(v, k)
-				os.system(command)
-				print(command)
-			# os.system("mkdir temp")
-			os.system("./finalize.sh {}".format(finalFileNam))
-			os.system("./clearAll.sh")
-			# allFiles = list(glob.glob("frame*.jpg"))
-			# allFiles.sort(key=lambda k: int(k.replace("frame", "").replace(".jpg", "")))
-			return
-		else:
-			print("Trying next video...")
-			os.system("./clearAll.sh")
-
+		a.append((index, val, songName))
+	thread = [threading.Thread(target=create_video_from_info, args=(info,)) for info in a]
+	for t in thread:
+		t.start()
+	for t in thread:
+		t.join()
 
 if __name__ == '__main__':
 	# recreate_image("frame00020.jpg")
