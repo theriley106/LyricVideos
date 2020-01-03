@@ -116,7 +116,7 @@ def create_lyric_video(songName):
 				os.system(command)
 				print(command)
 			# os.system("mkdir temp")
-			os.system("./finalize.sh {}")
+			os.system("./finalize.sh {}".format(finalFileNam))
 			os.system("./clearAll.sh")
 			# allFiles = list(glob.glob("frame*.jpg"))
 			# allFiles.sort(key=lambda k: int(k.replace("frame", "").replace(".jpg", "")))
