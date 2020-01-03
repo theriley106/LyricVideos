@@ -76,18 +76,16 @@ def create_lyric_video(songName):
 		count = 0
 		success = True
 		db = {}
-		while success:
-			  frameFile = "frame{}.jpg".format(str(count).zfill(5))
-			  cv2.imwrite(frameFile, image)     # save frame as JPEG file
-			  success,image = vidcap.read()
+		os.system("ffmpeg -i {} -vf fps=1 frame%05d.jpg".format(a))
+		for frameFile in glob.glob("frame*jpg"):
 			  db[frameFile] = frameFile
 			  count += 1
-		os.system("ffmpeg -i {} -vf fps=1 frame%05d.jpg".format(a))
+		# count = len(list())
 		os.system("ffmpeg -i {} -f mp3 -ab 192000 -vn audio.mp3".format(a))
 		audio = MP4(a)
 		# os.system("cp frame* test/")
 		# raw_input(audio.info.length)
-		fps = int(float(count) / audio.info.length)
+		fps = 1
 		# print("length of each frame in seconds: {}".format())
 		# raw_input("FPS ^")
 		vals = [None]
