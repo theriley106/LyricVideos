@@ -135,26 +135,16 @@ def create_lyric_video(songName):
 		t.join()
 
 if __name__ == '__main__':
-
 	if '-f' in sys.argv:
 		songs = open(sys.argv[2]).read().split("\n")
 	else:
 		songs = [" ".join(sys.argv[1:])]
 
 	for songName in songs:
-		print songName
-	quit()
-
-	for songName in songs:
 		try:
 			create_lyric_video(songName)
 		except Exception as exp:
 			print("ERROR {} {}".format(songName, exp))
-
-	quit()
-	# recreate_image("frame00020.jpg")
-	# raw_input("CONTINUE")
-	
 	
 	
 
