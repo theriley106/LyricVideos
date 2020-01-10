@@ -8,7 +8,6 @@ from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import imageOCR
 import threading
-from argparse import ArgumentParser
 import sys
 
 OVERRIDE_OCR = False
@@ -136,23 +135,26 @@ def create_lyric_video(songName):
 		t.join()
 
 if __name__ == '__main__':
-	parser = ArgumentParser()
 
-	parser.add_argument("-f", "--file", dest="fileName",
-	                    help="Input filename")
+	if '-f' in sys.argv:
+		songs = open(sys.argv[2]).read().split("\n")
+	else:
+		songs = [" ".join(sys.argv[1:])]
 
-	args = parser.parse_args()
-	print args
-	print args.fileName
+	for songName in songs:
+		print songName
 	quit()
-	# recreate_image("frame00020.jpg")
-	# raw_input("CONTINUE")
-	for songName in open("songs.txt").read().split("\n"):
+
+	for songName in songs:
 		try:
-			# songName = raw_input("Song Name: ")
 			create_lyric_video(songName)
 		except Exception as exp:
 			print("ERROR {} {}".format(songName, exp))
+
+	quit()
+	# recreate_image("frame00020.jpg")
+	# raw_input("CONTINUE")
+	
 	
 	
 
