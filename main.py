@@ -50,15 +50,6 @@ def get_all_song_options(song):
 	os.system(command)
 	return [x for x in open('tmp').read().split("\n") if len(x) > 0]
 
-def download_song(song):
-	fileName = "download_" + ''.join([str(random.randint(1,9)) for i in range(10)]) + ".mp4"
-	command = "youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' "
-	command += '"ytsearch1:{} lyrics" '.format(song)
-	command += '--output "{}"'.format(fileName)
-	os.system(command)
-	# os.system("youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' ytsearch3:'nine in the afternoon lyrics' --get-id")
-	return fileName
-
 def download_by_id(idVal, song, index):
 	fileName = "download_" + ''.join([str(random.randint(1,9)) for i in range(10)]) + "{}.mp4".format(index)
 	command = "youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' https://www.youtube.com/watch?v={} ".format(idVal)
@@ -66,7 +57,6 @@ def download_by_id(idVal, song, index):
 	os.system(command)
 	# os.system("youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' ytsearch3:'nine in the afternoon lyrics' --get-id")
 	return fileName
-
 
 def create_video():
     os.system("ffmpeg -r 1 -i frame%01d.png -vcodec mpeg4 -y movie.mp4")
