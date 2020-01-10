@@ -2,13 +2,14 @@ import os
 import random
 import cv2
 import glob
-print(cv2.__version__)
 from PIL import Image, ImageStat
 from mutagen.mp4 import MP4
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import imageOCR
 import threading
+
+OVERRIDE_OCR = False
 
 def recreate_image(fileName, override=None):
 	print("RECREATING IMAGE {}".format(fileName))
@@ -111,7 +112,10 @@ def create_video_from_info(info):
 		# print(i)
 	for val in valsInfo:
 		if val != None:
-			recreate_image(val)
+			if OVERRIDE_OCR == True:
+				recreate_image(val, "Video {}".format(index))
+			else:
+				recreate_image(val)
 	files = []
 	os.system("mkdir temp_{}".format(index))
 	os.system("rm temp_{}/*".format(index))
