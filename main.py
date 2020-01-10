@@ -9,6 +9,7 @@ import textwrap
 import imageOCR
 import threading
 from argparse import ArgumentParser
+import sys
 
 OVERRIDE_OCR = False
 
@@ -135,6 +136,15 @@ def create_lyric_video(songName):
 		t.join()
 
 if __name__ == '__main__':
+	parser = ArgumentParser()
+
+	parser.add_argument("-f", "--file", dest="fileName",
+	                    help="Input filename")
+
+	args = parser.parse_args()
+	print args
+	print args.fileName
+	quit()
 	# recreate_image("frame00020.jpg")
 	# raw_input("CONTINUE")
 	for songName in open("songs.txt").read().split("\n"):
