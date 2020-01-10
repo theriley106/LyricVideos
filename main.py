@@ -56,7 +56,7 @@ def download_song(song):
 	command += '"ytsearch1:{} lyrics" '.format(song)
 	command += '--output "{}"'.format(fileName)
 	os.system(command)
-	os.system("youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' ytsearch3:'nine in the afternoon lyrics' --get-id")
+	# os.system("youtube-dl -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4' ytsearch3:'nine in the afternoon lyrics' --get-id")
 	return fileName
 
 def download_by_id(idVal, song, index):
