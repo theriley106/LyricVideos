@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import imageOCR
 import threading
+from argparse import ArgumentParser
 
 OVERRIDE_OCR = False
 
