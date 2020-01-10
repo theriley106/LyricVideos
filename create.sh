@@ -1,2 +1,2 @@
 #!/bin/bash
-tinify.py "$@"
+python main.py "$@"
