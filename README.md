@@ -19,7 +19,7 @@ $ ./create nine in the afternoon
 
 This program does not work with Lyric videos that use transitions between words.  For example:
 
-<img src="/static/example.gif"/>
+<img align="center" src="/static/example.gif"/>
 
 ###
 
