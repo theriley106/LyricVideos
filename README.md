@@ -13,12 +13,13 @@ or
 $ ./create nine in the afternoon
 ```
 
+## Supported Videos
+
 ## Unsupported Videos
 
 This program does not work with Lyric videos that use transitions between words.  For example:
 
 <img src="/static/example.gif"/>
-
 
 ###
 
