@@ -18,7 +18,7 @@ $ ./create nine in the afternoon
 
 ###
 
-The "Quality" of a video is determined based on the number of number of correct words found within the frames in the video.
+The "Quality" of a video is determined based on the number of correct words found within the frames in the video.
 
 
 
