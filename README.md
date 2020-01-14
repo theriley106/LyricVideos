@@ -23,8 +23,3 @@ This program does not work with Lyric videos that use transitions between words.
 ###
 
 The "Quality" of a video is determined based on the number of correct words found within the frames in the video.
-
-
-
-#### -p=3
-
