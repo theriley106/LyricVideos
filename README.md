@@ -1,6 +1,6 @@
 ## How does this work
 
-Youtube videos are pulled using youtube-dl, and OCR is done on each unique frame in the video.  This gives us a general idea of the song lyrics with a timestamp range that matches the audio in the song.
+Youtube videos are pulled using `youtube-dl`, and OCR is done on each *unique* frame in the video.  This gives us a general idea of the song lyrics with a timestamp range that matches the audio in the song.
 
 We can then generate a new lyric video by recreating each frame and mending the frames together using `ffmpeg`.  The transitions and audio can then be added, and the final result is a video that's indistinguishable from other lyric videos on Youtube that follow the same style.
 
