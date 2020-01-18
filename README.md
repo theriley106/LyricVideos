@@ -1,6 +1,8 @@
 # LyricVideos
 Automating the creation of Lyric videos on Youtube
 
+### How does this work
+
 ### Using the Tool
 
 ```{.sourceCode .bash}
@@ -50,4 +52,6 @@ Alternatively, videos with little/no transition between lyrics work really well.
 <img src="/static/goodExample.gif"/>
 </p>
 
-We remedy this by downloading multiple lyric videos, and choosing the "best" one based on the number of correct words found within the frames in the video.
+We remedy this by downloading multiple lyric videos, and choosing the "best" one based on the number of unique frames in the video.
+
+The idea is that a lower number of unique frames likely means that the video is *not* using transitions.
