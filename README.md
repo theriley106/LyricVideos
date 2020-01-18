@@ -1,6 +1,3 @@
-# LyricVideos
-Automating the creation of Lyric videos on Youtube
-
 ### How does this work
 
 Youtube videos are pulled using youtube-dl, and OCR is done on each unique frame in the video.  This gives us a general idea of the song lyrics with a timestamp range that matches the audio in the song.
