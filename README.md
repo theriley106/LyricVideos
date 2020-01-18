@@ -1,10 +1,10 @@
-### How does this work
+## How does this work
 
 Youtube videos are pulled using youtube-dl, and OCR is done on each unique frame in the video.  This gives us a general idea of the song lyrics with a timestamp range that matches the audio in the song.
 
 We can then generate a new lyric video by recreating each frame and mending the frames together using `ffmpeg`.  The transitions and audio can then be added, and the final result is a video that's indistinguishable from other lyric videos on Youtube that follow the same style.
 
-### Using the Tool
+## Using the Tool
 
 ```{.sourceCode .bash}
 $ ./create -f songs.txt
@@ -15,6 +15,9 @@ or
 ```{.sourceCode .bash}
 $ ./create nine in the afternoon
 ```
+
+**Note: This program is not intended to facilitate copyright infringement by any means.  Youtube is extremely good at removing copyrighted material from their site -- please only use this with [Royalty Free music](https://en.wikipedia.org/wiki/Royalty-free) or music that you have permission to upload to Youtube.**
+
 
 ## Video Quality
 
@@ -56,10 +59,6 @@ Alternatively, videos with little/no transition between lyrics work really well.
 We remedy this by downloading multiple lyric videos, and choosing the "best" one based on the number of unique frames in the video.
 
 The idea is that a lower number of unique frames likely means that the video is *not* using transitions.
-
-### Note
-
-**This program is not intended to facilitate copyright infringement by any means.  Youtube is extremely good at removing copyrighted material from their site -- please only use this with [Royalty Free music](https://en.wikipedia.org/wiki/Royalty-free) or music that you have permission to upload to Youtube.**
 
 ### License
  
