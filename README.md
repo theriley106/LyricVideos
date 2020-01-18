@@ -15,6 +15,25 @@ $ ./create nine in the afternoon
 
 ## Improving Video Quality
 
+Everything works by default with no external APIs, but I've found that using the [AWS Rekognition API](https://aws.amazon.com/rekognition/) results in significantly higher quality videos compared to ones that only use tesseract on your local machine.
+
+Tesseract is still the default with this program, but you can use AWS Rekognition by running `./setupAWS`.
+
+```bash
+$ ./setupAWS
+What is your AWS Access Token?
+my_fake_access_token
+
+What is your AWS Secret key?
+my_fake_secret_key
+
+AWS Token: my_fake_access_token
+AWS Secret Key: my_fake_secret_key
+
+Does this look correct? (y/n)
+AWS Rekognition has been setup
+```
+
 This program does not work as well with Lyric videos that use transitions between words.  For example:
 
 <p align="center">
