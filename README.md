@@ -1,5 +1,5 @@
 # LyricVideos
-Generating Lyric Videos
+Automating the creation of Lyric videos on Youtube
 
 ### Using the Tool
 
