@@ -33,9 +33,7 @@ def recreate_image(fileName, override=None):
 	    w, h = draw.textsize(line, font=font)
 	    draw.text(((MAX_W - w) / 2, current_h), line, font=font)
 	    current_h += h + pad
-
 	# d.text((10,10), text, font=fnt, fill=(255, 255, 0))
-	 
 	img.save(fileName)
 
 def hash_image(image_path):
@@ -139,7 +137,6 @@ if __name__ == '__main__':
 		songs = open(sys.argv[2]).read().split("\n")
 	else:
 		songs = [" ".join(sys.argv[1:])]
-
 	for songName in songs:
 		try:
 			create_lyric_video(songName)
